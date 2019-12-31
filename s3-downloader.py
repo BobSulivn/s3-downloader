@@ -11,8 +11,13 @@ import os
 import sys
 import boto3
 
-# bucket name we'd like to download from
-BUCKET_NAME = sys.argv[1]
+# check if bucket name was supplied, exit if not
+if len(sys.argv[1]) < 1:
+    print('Script not given bucket to download from. \n')
+    print('Try python s3-downloader.py s3-bucket-name')
+    exit()
+else:
+    BUCKET_NAME = sys.argv[1]
 
 # setup s3 resource and bucket we'd like to download from
 s3 = boto3.resource('s3')
@@ -35,5 +40,9 @@ for obj in objects:
     if filename != "":
         # download objects that are not folders in s3
         download_bucket.download_file(obj.key, download_name)
+
+# print success and exit
+print('Download complete!')
+exit()
 
 # %%
